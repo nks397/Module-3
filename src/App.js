@@ -1,58 +1,47 @@
 import React from "react"
+import axios from "axios"
+import "./styles.css"
 
-class App extends React.Component {
+class App extends React.Component{
     constructor() {
         super()
         this.state = {
-            name: "",
-            nameArr: []
+            color:""
         }
-            this.handleChange = this.handleChange.bind(this)
-            this.handleSubmit = this.handleSubmit.bind(this)
-    }
-    handleChange(event) {
-        const {name, value} = event.target
-        this.setState({
-            [name]: value,
-        })
+        this.handleclick = this.handleclick.bind(this)
     }
 
-    handleSubmit(event) {
-        event.preventDefault()
-        this.setState(prevState => {
-            return {
-                nameArr: [
-                    ...prevState.nameArr, {name: prevState.name}
-
-                ]
-            }
+    componentDidMount() {
+        axios.get(`https://www.colr.org/json/color/random?timestamp=${new Date().getTime()}`)
+        .then(response => {
+            this.setState({
+                color: "#"+ response.data.colors[0].hex
+                // console.log(response.data)
+            })  
         })
-        console.log("Submit successful!")
-    }    
+    }
+    
+    handleclick(){
+        axios.get(`https://www.colr.org/json/color/random?timestamp=${new Date().getTime()}`)
+        .then(response => {
+            this.setState({
+                color: "#"+ response.data.colors[0].hex
+            })  
+        }) 
+       
+    }
 
-
-    render() {
-        const newNameArr = this.state.nameArr.map((namesList, index) => <li key={index}>{namesList.name}</li>)
-        return (
+    render(){
+        console.log(this.state, "hello")
+        return(
             <div>
-                <form onSubmit={this.handleSubmit}>
-                    <input type="text" name="name" value={this.state.name} onChange={this.handleChange}/>
-                    <button type="submit">Submit</button>
-                </form>
-                <br />
-                <h1>Name: {this.state.name}</h1>
-                <br />
-                <ol style={{fontSize: "20px"}}>
-                    {newNameArr}
-                </ol>
+                <h1 className="title">Random Color Block</h1>
+                <div className="color-block"style={{backgroundColor: this.state.color}}></div>
+                <button onClick={this.handleclick} className="btn">Click Me </button>
+
             </div>
         )
-        
     }
 }
 
 export default App
-
-// Build a simple react app with an *input box, an *<h1>, a *button, and an *ordered list. The user will type names into the input box.
-// When the user types in the input box, the <h1> should update to show the same text as the input box.
-// When the user clicks the button, the value of the input box should be added to a running list of names that have been previous entered. (Hint: you'll need to set state and map over an array to do this).
