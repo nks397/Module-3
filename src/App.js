@@ -1,44 +1,42 @@
 import React from "react"
-import axios from "axios"
-import "./styles.css"
+import DiceBox from "./DiceBox"
 
-class App extends React.Component{
-    constructor() {
+class App extends React.Component {
+    constructor(){
         super()
         this.state = {
-            color:""
+            num1: 0,
+            num2: 0,
+            num3: 0,
+            num4: 0,
+            num5: 0
         }
-        this.handleclick = this.handleclick.bind(this)
+        this.diceGenerator = this.diceGenerator.bind(this)
     }
 
-    componentDidMount() {
-        axios.get(`https://www.colr.org/json/color/random?timestamp=${new Date().getTime()}`)
-        .then(response => {
-            this.setState({
-                color: "#"+ response.data.colors[0].hex
-                // console.log(response.data)
-            })  
+    diceGenerator() {
+        this.setState(prevState =>{
+            const random1 = Math.floor(Math.random() * 6)
+            const random2 = Math.floor(Math.random() * 6)
+            const random3 = Math.floor(Math.random() * 6)
+            const random4 = Math.floor(Math.random() * 6)
+            const random5 = Math.floor(Math.random() * 6)
+
+            return {
+               num1: random1,
+               num2: random2,
+               num3: random3,
+               num4: random4,
+               num5: random5
+            }
         })
     }
-    
-    handleclick(){
-        axios.get(`https://www.colr.org/json/color/random?timestamp=${new Date().getTime()}`)
-        .then(response => {
-            this.setState({
-                color: "#"+ response.data.colors[0].hex
-            })  
-        }) 
-       
-    }
 
-    render(){
-        console.log(this.state, "hello")
+    render() {
         return(
             <div>
-                <h1 className="title">Random Color Block</h1>
-                <div className="color-block"style={{backgroundColor: this.state.color}}></div>
-                <button onClick={this.handleclick} className="btn">Click Me </button>
-
+                <DiceBox num1={this.state.num1} num2={this.state.num2} num3={this.state.num3} num4={this.state.num4} num5={this.state.num5}/>
+                <button className="diceBtn" onClick={this.diceGenerator}>Roll the Dice</button>
             </div>
         )
     }
