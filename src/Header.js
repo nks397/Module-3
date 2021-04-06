@@ -1,9 +1,11 @@
 import React from "react"
-import Navbar from "./Navbar"
 
-function Header() {
+function Header(){
     return(
-        <Navbar />
+        <div className="header-container">
+            <img src="https://cdn.pixabay.com/photo/2018/02/13/11/55/mafia-3150587__340.png" alt="godfather"/>
+            <h1 className="header">Don Corleone's List</h1>
+        </div>
     )
 }
 
